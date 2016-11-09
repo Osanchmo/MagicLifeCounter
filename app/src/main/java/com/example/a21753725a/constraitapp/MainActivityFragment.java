@@ -1,9 +1,12 @@
 package com.example.a21753725a.constraitapp;
 
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,31 +22,29 @@ public class MainActivityFragment extends Fragment {
 
     public MainActivityFragment() {
     }
-boolean reset = false;
+
+
+    Player first;
+    Player second;
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            return true;
-        }
-        else
-            return super.onOptionsItemSelected(item);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
 
-        final View frag = inflater.inflate(R.layout.fragment_main, container, false);
+        View frag = inflater.inflate(R.layout.fragment_main, container, false);
+        TextView playerOneL = (TextView) frag.findViewById(R.id.vida);
+        TextView playerTwoL = (TextView) frag.findViewById(R.id.secondVida);
+        TextView playerOneP = (TextView) frag.findViewById(R.id.ven);
+        TextView playerTwoP = (TextView) frag.findViewById(R.id.secondPoison);
 
-        final TextView playerOneL = (TextView) frag.findViewById(R.id.vida);
-        final TextView playerTwoL = (TextView) frag.findViewById(R.id.secondVida);
-        final TextView playerOneP = (TextView) frag.findViewById(R.id.ven);
-        final TextView playerTwoP = (TextView) frag.findViewById(R.id.secondPoison);
-
-        final Player first = new Player(playerOneL, playerOneP);
-        final Player second = new Player(playerTwoL, playerTwoP);
+         first = new Player(playerOneL, playerOneP);
+         second = new Player(playerTwoL, playerTwoP);
 
         //primer jugador
 
@@ -80,6 +81,7 @@ boolean reset = false;
         });
 
         //Segón jugador
+
         Button secondSumVida = (Button) frag.findViewById(R.id.secondSumVida);
         secondSumVida.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +114,8 @@ boolean reset = false;
             }
         });
 
+        //Robo de vida para cada jugador
+
         ImageButton twoLifeSteal = (ImageButton) frag.findViewById(R.id.twoLifeSteal);
         twoLifeSteal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,5 +134,28 @@ boolean reset = false;
             }
         });
         return frag;
+    }
+
+    //iniciamos el menu
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.reset_game, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(R.id.resetGame == id) {
+            resetGame();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void resetGame(){
+        first.reset();
+        second.reset();
+        Snackbar.make(getView(), "Reset!", Snackbar.LENGTH_SHORT).show();
     }
 }

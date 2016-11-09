@@ -50,12 +50,7 @@ public class Player {
         this.poison = poison;
     }
 
-    public void reset() {
-        life = 20;
-        poison = 0;
-        vida.setText(Integer.toString(life));
-        veneno.setText(Integer.toString(poison));
-    }
+
 
 
     public void vidaMasUno() {
@@ -72,6 +67,13 @@ public class Player {
     }
     public void venenoMenosUno() {
         poison--;
+        veneno.setText(Integer.toString(poison));
+    }
+
+    public void reset() {
+        life = 20;
+        poison = 0;
+        vida.setText(Integer.toString(life));
         veneno.setText(Integer.toString(poison));
     }
 
